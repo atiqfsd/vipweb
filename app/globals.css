@@ -1,26 +1,105 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Brand palette — provisional values from docs/01-brand.md.
+     Update here to rebrand; every component reads from these tokens. */
+  --color-navy-deep: #071a2b;
+  --color-navy: #0d2940;
+  --color-tech-blue: #087ea4;
+  --color-cyan: #18a9c8;
+  --color-off-white: #f5f7f8;
+  --color-slate: #334155;
+  --color-muted: #64748b;
+  --color-line: #dce4e8;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Warm accent pair — reserved for the Application Assistance division
+     only, so the two sides of the business read as visually distinct
+     without either one becoming the site's default palette. */
+  --color-paper: #f3ede1;
+  --color-paper-line: #e2d5bf;
+  --color-brass: #a9702f;
+  --color-brass-ink: #7a4e1e;
+
+  /* Semantic aliases used across components */
+  --color-background: #ffffff;
+  --color-foreground: var(--color-navy-deep);
+  --color-surface: var(--color-off-white);
+  --color-body: var(--color-slate);
+  --color-subtle: var(--color-muted);
+
+  /* Type */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Radius — restrained on purpose, not the rounded-blob default */
+  --radius-sm: 0.1875rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Unlayered on purpose: this must always beat Tailwind's own layered
+   base/utility rules (e.g. its own outline-color handling), so the
+   accessible focus ring can never be silently overridden. */
+:focus-visible {
+  outline: 2px solid var(--color-tech-blue);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Deliberate "media not yet supplied" treatment (DivisionPanel component).
+   A fine dot grid on navy reads as a designed brand pattern rather than
+   an empty grey placeholder, and drops out cleanly once real photography
+   replaces it. Used for the Digital & IT (tech) side. */
+.bg-dot-grid {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--color-cyan) 55%, transparent) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Fine diagonal line texture — a second, quieter "tech" pattern used
+   behind panels so not every dark panel on the site looks identical. */
+.bg-line-grid {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-cyan) 16%, transparent) 0px,
+    color-mix(in srgb, var(--color-cyan) 16%, transparent) 1px,
+    transparent 1px,
+    transparent 14px
+  );
+}
+
+/* Warm counterpart to the dot grid, used only on the Application
+   Assistance (paper) side so the two divisions never share a texture. */
+.bg-paper-grain {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--color-brass) 30%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
