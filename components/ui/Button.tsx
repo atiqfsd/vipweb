@@ -26,13 +26,26 @@ type ButtonProps = {
 
 // Link-styled CTA. A native <button> variant can be added when the
 // contact form (Stage 5) needs one.
+//
+// Internal routes use next/link for client-side navigation. Protocol
+// links (mailto:, tel:, wa.me / external http) render as a plain <a> —
+// next/link intercepts clicks and can mangle non-navigational hrefs
+// such as `mailto:...?subject=...`, stopping the mail app from opening.
+const isInternalRoute = (href: string) => href.startsWith("/") || href.startsWith("#");
+
 export function Button({ href, variant = "primary", size = "md", className = "", children, ...rest }: ButtonProps) {
+  const classes = `inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
+  if (!isInternalRoute(href)) {
+    return (
+      <a href={href} className={classes} {...rest}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
-      {...rest}
-    >
+    <Link href={href} className={classes} {...rest}>
       {children}
     </Link>
   );

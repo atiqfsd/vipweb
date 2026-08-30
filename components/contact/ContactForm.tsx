@@ -8,41 +8,92 @@ const enquiryTypes = ["Digital & IT Solutions", "Application assistance", "Not s
 const inputClasses =
   "w-full border border-line bg-background px-4 py-3 text-base text-foreground placeholder:text-muted focus-visible:border-tech-blue";
 
-// There's no backend, database or email-sending account configured for
-// this site (docs/11-technical-architecture.md: no DB unless a real
-// requirement exists; never put API keys in frontend code). Rather than
-// wire up a fake "Send" button that silently fails, this composes a
-// pre-filled email via `mailto:` and hands it to the visitor's own mail
-// app — genuinely functional today. If the owner sets up a trusted
-// email-sending provider later, swap the onSubmit body for a real POST
-// and this markup/validation can stay as-is.
+type Status = "idle" | "submitting" | "success" | "error";
+
+// The form submits to Web3Forms (https://web3forms.com), a trusted
+// email/form provider — see docs/11-technical-architecture.md. This site
+// is a static export with no server of its own, so the browser posts
+// straight to the provider, which emails the enquiry to siteConfig.email.
+// The access key in site-config.ts is not a secret (it only names the
+// destination inbox). If nothing is configured yet, the form falls back
+// to opening the visitor's mail app via `mailto:` so it is never a
+// dead button.
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const keyConfigured =
+  siteConfig.web3formsKey && siteConfig.web3formsKey !== "REPLACE_WITH_WEB3FORMS_ACCESS_KEY";
+
 export function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const name = String(form.get("name") ?? "").trim();
-    const email = String(form.get("email") ?? "").trim();
-    const phone = String(form.get("phone") ?? "").trim();
-    const enquiryType = String(form.get("enquiryType") ?? "");
-    const message = String(form.get("message") ?? "").trim();
+  function buildFields(form: FormData) {
+    return {
+      name: String(form.get("name") ?? "").trim(),
+      email: String(form.get("email") ?? "").trim(),
+      phone: String(form.get("phone") ?? "").trim(),
+      enquiryType: String(form.get("enquiryType") ?? ""),
+      message: String(form.get("message") ?? "").trim(),
+    };
+  }
 
-    const subject = `Enquiry from ${name || "website contact form"}`;
+  function openMailtoFallback(f: ReturnType<typeof buildFields>) {
+    const subject = `Enquiry from ${f.name || "website contact form"}`;
     const bodyLines: string[] = [];
-    if (enquiryType) bodyLines.push(`Enquiry type: ${enquiryType}`);
-    bodyLines.push(`Name: ${name}`, `Email: ${email}`);
-    if (phone) bodyLines.push(`Phone: ${phone}`);
-    bodyLines.push("", message);
+    if (f.enquiryType) bodyLines.push(`Enquiry type: ${f.enquiryType}`);
+    bodyLines.push(`Name: ${f.name}`, `Email: ${f.email}`);
+    if (f.phone) bodyLines.push(`Phone: ${f.phone}`);
+    bodyLines.push("", f.message);
+    window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+  }
 
-    const mailto = `mailto:${siteConfig.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
-    window.location.href = mailto;
-    setSubmitted(true);
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formEl = event.currentTarget;
+    const form = new FormData(formEl);
+
+    // Honeypot: real users leave this hidden field empty.
+    if (String(form.get("botcheck") ?? "").length > 0) return;
+
+    const fields = buildFields(form);
+
+    if (!keyConfigured) {
+      openMailtoFallback(fields);
+      setStatus("success");
+      return;
+    }
+
+    setStatus("submitting");
+    try {
+      const res = await fetch(WEB3FORMS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: siteConfig.web3formsKey,
+          subject: `Website enquiry from ${fields.name || "contact form"}`,
+          from_name: "VIP e-Services website",
+          name: fields.name,
+          email: fields.email,
+          phone: fields.phone || "Not provided",
+          "Enquiry type": fields.enquiryType || "Not specified",
+          message: fields.message,
+        }),
+      });
+      const data = (await res.json()) as { success?: boolean };
+      if (res.ok && data.success) {
+        setStatus("success");
+        formEl.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="grid gap-6" noValidate={false}>
+      <form onSubmit={handleSubmit} className="grid gap-6">
         <div className="grid gap-6 sm:grid-cols-2">
           <div>
             <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -96,24 +147,40 @@ export function ContactForm() {
           />
         </div>
 
+        {/* Honeypot field — hidden from people, visible to bots. */}
+        <input
+          type="checkbox"
+          name="botcheck"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+        />
+
         <div>
           <button
             type="submit"
-            className="inline-flex items-center justify-center gap-2 bg-tech-blue px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-navy"
+            disabled={status === "submitting"}
+            className="inline-flex items-center justify-center gap-2 bg-tech-blue px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-navy disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Send message
+            {status === "submitting" ? "Sending…" : "Send message"}
           </button>
           <p className="mt-3 max-w-md text-sm leading-6 text-subtle">
-            This opens your email app with your message ready to send to {siteConfig.email} — nothing is stored on
-            this website. Prefer not to? Call or WhatsApp us instead.
+            We only use the details you send to reply to your enquiry. Prefer to talk? Call or WhatsApp us instead.
           </p>
         </div>
 
         <div role="status" aria-live="polite">
-          {submitted && (
+          {status === "success" && (
             <p className="border-l-2 border-tech-blue pl-4 text-sm leading-6 text-body">
-              Your email app should have opened with the message ready — just hit send from there. If nothing
-              happened, email us directly at {siteConfig.email}.
+              {keyConfigured
+                ? "Thanks — your message has been sent. We'll get back to you as soon as we can."
+                : `Your email app should have opened with the message ready — just hit send from there. If nothing happened, email us directly at ${siteConfig.email}.`}
+            </p>
+          )}
+          {status === "error" && (
+            <p className="border-l-2 border-red-500 pl-4 text-sm leading-6 text-body">
+              Something went wrong sending your message. Please try again, or email us directly at {siteConfig.email}.
             </p>
           )}
         </div>

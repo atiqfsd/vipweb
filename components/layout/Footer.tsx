@@ -12,18 +12,12 @@ export function Footer() {
       <Container className="grid gap-14 py-16 sm:py-20 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <div className="flex items-center gap-3">
-            {/* White badge: the logo's own background isn't transparent, so
-                it needs a light card to sit on rather than showing a raw
-                white square against navy. */}
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center bg-white p-1.5">
-              <Image src={logo} alt="" className="h-full w-full object-contain" />
-            </span>
+            {/* The supplied logo is a solid green square with a white mark,
+                so it reads fine straight on the navy footer — no card. */}
+            <Image src={logo} alt="" className="h-12 w-auto shrink-0" />
             <div>
               <p className="text-2xl leading-none font-semibold tracking-tight">
                 VIP <span className="font-normal text-cyan">e-Services</span>
-              </p>
-              <p className="mt-2 text-[0.65rem] font-semibold tracking-[0.2em] text-off-white/40 uppercase">
-                East London
               </p>
             </div>
           </div>

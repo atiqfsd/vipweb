@@ -43,7 +43,7 @@ VIP e-Services
 London  
 E6 3BD
 
-Phone: +44 7881 948169
+Phone: 020 3685 7733
 
 Email: info@vipeservices.co.uk
 

@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/home/SectionHeading";
 import { VacancyCard } from "@/components/careers/VacancyCard";
 import { Button } from "@/components/ui/Button";
 import { ContactCTA } from "@/components/shared/ContactCTA";
+import { SiteImage } from "@/components/shared/SiteImage";
 import { siteConfig } from "@/lib/site-config";
 import { vacancies, workAreas } from "@/lib/careers";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -45,6 +46,15 @@ export default function CareersPage() {
             assistance for local people. Both need people who can explain things clearly and deal with customers
             honestly.
           </p>
+        </Container>
+        <Container className="mt-10">
+          <SiteImage
+            src="/images/careers-team.webp"
+            alt="Colleagues talking over coffee beside a desk at the VIP e-Services office in East London."
+            aspect="aspect-[16/9]"
+            className="border border-line"
+            sizes="(min-width: 1024px) 75vw, 100vw"
+          />
         </Container>
       </div>
 

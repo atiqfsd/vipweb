@@ -6,7 +6,7 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/home/SectionHeading";
 import { ApplicationDisclaimer } from "@/components/services/ApplicationDisclaimer";
 import { ContactCTA } from "@/components/shared/ContactCTA";
-import { ShopfrontIllustration } from "@/components/shared/ShopfrontIllustration";
+import { SiteImage } from "@/components/shared/SiteImage";
 import { siteConfig } from "@/lib/site-config";
 import { breadcrumbSchema } from "@/lib/schema";
 
@@ -155,7 +155,12 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="lg:col-span-5">
-            <ShopfrontIllustration className="h-auto w-full text-cyan/70" />
+            <SiteImage
+              src="/images/about.webp"
+              alt="The VIP e-Services shopfront at 134B Barking Road, East London, signed Digital & IT Solutions."
+              aspect="aspect-[4/3]"
+              className="border border-off-white/15"
+            />
           </div>
         </Container>
       </div>

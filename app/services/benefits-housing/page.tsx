@@ -51,6 +51,10 @@ export default function BenefitsHousingPage() {
           description="Benefits, housing and pension forms can be long and confusing. We help people in East London understand what's being asked, gather the right documents, and complete these applications correctly."
           primaryCta={{ label: "Call us", href: siteConfig.phoneHref }}
           secondaryCta={{ label: "Looking for work or ID applications?", href: "/services/work-applications" }}
+          image={{
+            src: "/images/benefits-housing-consultation.webp",
+            alt: "An adviser and a member of the public talking over a table by the window at the VIP e-Services office in East London.",
+          }}
         />
         <Container>
           <div className="mt-10 max-w-2xl">

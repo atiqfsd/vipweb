@@ -7,15 +7,13 @@ import { MobileNav } from "./MobileNav";
 import logo from "@/public/logo.jpg";
 
 // Real logo, as supplied by the owner — docs/01-brand.md: "Use the
-// existing logo where available. Do not redraw the logo." "EAST LONDON"
-// alongside it is a factual locality tag, not part of the mark.
+// existing logo where available. Do not redraw the logo."
 function Logo() {
   return (
     <span className="flex items-center gap-3">
       <Image src={logo} alt="" priority className="h-10 w-auto sm:h-12" />
-      <span className="hidden flex-col leading-none sm:flex">
-        <span className="text-lg font-semibold tracking-tight text-foreground">VIP e-Services</span>
-        <span className="mt-1 text-[0.65rem] font-semibold tracking-[0.2em] text-subtle uppercase">East London</span>
+      <span className="hidden text-lg font-semibold tracking-tight text-foreground sm:block">
+        VIP e-Services
       </span>
     </span>
   );

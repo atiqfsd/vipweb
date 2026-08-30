@@ -37,7 +37,7 @@ These are strategic themes, not guaranteed keyword targets.
 Ensure consistent NAP:
 Name: VIP e-Services
 Address: 134B Barking Road, London, E6 3BD
-Phone: +44 7881 948169
+Phone: 020 3685 7733
 
 Use:
 - LocalBusiness schema where appropriate

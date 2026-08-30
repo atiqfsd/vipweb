@@ -1,6 +1,7 @@
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { Container } from "@/components/layout/Container";
 import { MediaPanel } from "@/components/services/MediaPanel";
+import { SiteImage } from "@/components/shared/SiteImage";
 import { Button } from "@/components/ui/Button";
 
 type BreadcrumbItem = {
@@ -16,6 +17,7 @@ type CategoryHeroProps = {
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
   division?: "tech" | "warm";
+  image?: { src: string; alt: string };
 };
 
 // Shared hero for the services category pages: breadcrumb, large
@@ -30,6 +32,7 @@ export function CategoryHero({
   primaryCta,
   secondaryCta,
   division = "tech",
+  image,
 }: CategoryHeroProps) {
   const isTech = division === "tech";
   const accent = isTech ? "bg-tech-blue" : "bg-brass";
@@ -58,7 +61,17 @@ export function CategoryHero({
         </div>
 
         <div className="lg:col-span-5">
-          <MediaPanel aspect="aspect-[4/3]" division={division} label={eyebrow} />
+          {image ? (
+            <SiteImage
+              src={image.src}
+              alt={image.alt}
+              aspect="aspect-[4/3]"
+              priority
+              className="border border-line"
+            />
+          ) : (
+            <MediaPanel aspect="aspect-[4/3]" division={division} label={eyebrow} />
+          )}
         </div>
       </div>
     </Container>

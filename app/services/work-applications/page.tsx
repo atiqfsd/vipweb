@@ -54,6 +54,10 @@ export default function WorkApplicationsPage() {
           description="From job and delivery-platform applications to licences and identity documents, we help people in East London complete these applications correctly and submit them with confidence."
           primaryCta={{ label: "Call us", href: siteConfig.phoneHref }}
           secondaryCta={{ label: "Looking for benefits or housing help?", href: "/services/benefits-housing" }}
+          image={{
+            src: "/images/application-assistance.webp",
+            alt: "An adviser helping someone complete an application on a tablet at a desk in the VIP e-Services office.",
+          }}
         />
         <Container>
           <div className="mt-10 max-w-2xl">

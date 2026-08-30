@@ -4,7 +4,6 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/home/SectionHeading";
 import { ContactForm } from "@/components/contact/ContactForm";
-import { ShopfrontIllustration } from "@/components/shared/ShopfrontIllustration";
 import { siteConfig } from "@/lib/site-config";
 import { breadcrumbSchema } from "@/lib/schema";
 
@@ -205,7 +204,15 @@ export default function ContactPage() {
             </a>
           </div>
           <div className="lg:col-span-5">
-            <ShopfrontIllustration className="h-auto w-full text-cyan/70" />
+            <div className="overflow-hidden border border-off-white/15">
+              <iframe
+                title={`Map showing the location of ${siteConfig.name}, ${siteConfig.address.line1}, ${siteConfig.address.city} ${siteConfig.address.postcode}`}
+                src={siteConfig.mapEmbedSrc}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="block h-[340px] w-full border-0 sm:h-[400px]"
+              />
+            </div>
           </div>
         </Container>
       </div>

@@ -13,17 +13,24 @@ import { ServiceGroupPanel } from "@/components/services/ServiceGroupPanel";
 import { ServiceRowList } from "@/components/services/ServiceRowList";
 import { ContactCTA } from "@/components/shared/ContactCTA";
 import { FAQAccordion, type FAQItem } from "@/components/shared/FAQAccordion";
-import { ShopfrontIllustration } from "@/components/shared/ShopfrontIllustration";
+import { SiteImage } from "@/components/shared/SiteImage";
 import { digitalServices } from "@/lib/services";
 import { benefitsHousingGroups, workApplicationGroups } from "@/lib/service-groups";
 import { siteConfig } from "@/lib/site-config";
 import { faqSchema } from "@/lib/schema";
 
+const homeTitle =
+  "VIP e-Services | Digital & IT and Application Help in East London";
+
 export const metadata: Metadata = {
-  title: "Digital & IT Solutions and Application Assistance in East London",
+  // The root layout's title.template ("%s | VIP e-Services") does not apply to
+  // this route — page and layout share the "/" segment — so set the full title
+  // explicitly with `absolute` and keep the brand name in it.
+  title: { absolute: homeTitle },
   description:
     "VIP e-Services is based on Barking Road, East London. We build websites and software for local businesses, and help people complete benefits, housing and other applications.",
   alternates: { canonical: "/" },
+  openGraph: { title: homeTitle },
 };
 
 const featuredDigitalSlugs = [
@@ -205,7 +212,12 @@ export default function Home() {
             </a>
           </div>
           <div className="lg:col-span-5">
-            <ShopfrontIllustration className="h-auto w-full text-cyan/70" />
+            <SiteImage
+              src="/images/east-london-highstreet.webp"
+              alt="A parade of independent shops and Victorian terraces on a main road in East London, with a red double-decker bus."
+              aspect="aspect-[7/5]"
+              className="border border-off-white/15"
+            />
           </div>
         </Container>
       </div>

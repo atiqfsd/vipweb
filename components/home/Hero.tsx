@@ -1,5 +1,5 @@
 import { Container } from "@/components/layout/Container";
-import { MediaPanel } from "@/components/services/MediaPanel";
+import { SiteImage } from "@/components/shared/SiteImage";
 import { Button } from "@/components/ui/Button";
 import { siteConfig } from "@/lib/site-config";
 
@@ -16,7 +16,7 @@ export function Hero() {
             <div className="flex items-center gap-3">
               <span aria-hidden="true" className="h-px w-8 bg-tech-blue" />
               <p className="text-sm font-semibold tracking-wide text-tech-blue uppercase">
-                VIP e-Services · East London
+                VIP e-Services
               </p>
             </div>
             <h1 className="mt-5 text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[1.05] font-semibold tracking-tight text-balance text-foreground">
@@ -44,7 +44,13 @@ export function Hero() {
           </div>
 
           <div className="relative lg:col-span-5">
-            <MediaPanel aspect="aspect-[4/5]" division="tech" label="VIP e-Services · Barking Road" />
+            <SiteImage
+              src="/images/hero-barking-road.webp"
+              alt="The VIP e-Services shopfront at 134B Barking Road, East London, signed Digital & IT Solutions."
+              aspect="aspect-[4/5]"
+              priority
+              className="border border-line"
+            />
             <div className="relative -mt-10 ml-6 max-w-xs border border-line bg-background p-6 shadow-[0_1px_2px_rgba(7,26,43,0.06)] sm:-mt-14 sm:ml-10 sm:p-8">
               <p className="text-sm font-semibold tracking-wide text-subtle uppercase">Visit us</p>
               <p className="mt-3 text-lg font-medium text-foreground">{siteConfig.address.line1}</p>

@@ -7,6 +7,7 @@ import { CategoryHero } from "@/components/services/CategoryHero";
 import { HowItWorks } from "@/components/services/HowItWorks";
 import { ServiceRowList } from "@/components/services/ServiceRowList";
 import { ContactCTA } from "@/components/shared/ContactCTA";
+import { SiteImage } from "@/components/shared/SiteImage";
 import { siteConfig } from "@/lib/site-config";
 import { digitalServices } from "@/lib/services";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -48,6 +49,10 @@ export default function DigitalItPage() {
           description="This side of VIP e-Services is genuine technology work — we design, build and support it ourselves. If your business needs a website, an application, custom software or better cybersecurity, this is the team for it."
           primaryCta={{ label: "Call to discuss your project", href: siteConfig.phoneHref }}
           secondaryCta={{ label: "Looking for application help instead?", href: "/services/benefits-housing" }}
+          image={{
+            src: "/images/digital-it.webp",
+            alt: "Two colleagues reviewing website work on a laptop at a desk in the VIP e-Services office.",
+          }}
         />
       </div>
 
@@ -61,6 +66,27 @@ export default function DigitalItPage() {
           />
           <div className="mt-12 max-w-3xl">
             <ServiceRowList services={digitalServices} />
+          </div>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container>
+          <div className="grid gap-6 sm:grid-cols-2 lg:gap-8">
+            <SiteImage
+              src="/images/web-development.webp"
+              alt="A developer working on a website layout on a laptop, with wireframe sketches and a phone alongside."
+              aspect="aspect-[4/3]"
+              className="border border-line"
+              sizes="(min-width: 640px) 45vw, 100vw"
+            />
+            <SiteImage
+              src="/images/cybersecurity.webp"
+              alt="Someone working through a printed security checklist against a laptop at a tidy desk."
+              aspect="aspect-[4/3]"
+              className="border border-line"
+              sizes="(min-width: 640px) 45vw, 100vw"
+            />
           </div>
         </Container>
       </Section>

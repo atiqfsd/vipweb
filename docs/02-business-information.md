@@ -14,7 +14,9 @@ E6 3BD
 
 ## Phone
 
-+44 7881 948169
+020 3685 7733
+
+WhatsApp remains on the previous mobile number, +44 7881 948169, until the owner confirms a WhatsApp-enabled number.
 
 ## Email
 

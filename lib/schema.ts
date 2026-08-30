@@ -22,6 +22,7 @@ export function organizationSchema() {
     },
     areaServed: "East London",
     availableLanguage: siteConfig.languages,
+    hasMap: siteConfig.mapsHref,
   };
 }
 
